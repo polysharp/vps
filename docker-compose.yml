@@ -23,7 +23,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.traefik.rule=Host(`traefik.alfred.polysharp.fr)'
-      - 'traefik.http.routers.traefik.entrypoints=webecure'
+      - 'traefik.http.routers.traefik.entrypoints=websecure'
       - 'traefik.http.routers.portainer.tls.certresolver=myresolver'
       - 'traefik.http.routers.traefik.service=api@internal'
 

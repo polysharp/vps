@@ -18,5 +18,19 @@ services:
       - letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
 
+  portainer:
+    image: portainer/portainer-ce:lts
+    container_name: portainer
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.portainer.rule=Host(`portainer.alfred.polysharp.fr`)'
+      - 'traefik.http.routers.portainer.entrypoints=websecure'
+      - 'traefik.http.routers.portainer.tls.certresolver=myresolver'
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
 volumes:
   letsencrypt:
+  portainer_data:

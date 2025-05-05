@@ -17,14 +17,23 @@ services:
     ports:
       - '80:80'
       - '443:443'
-      - '8080:8080'
     volumes:
       - letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.traefik.rule=Host(`traefik.alfred.polysharp.fr)'
+      - 'traefik.http.routers.traefik.entrypoints=webecure'
+      - 'traefik.http.routers.portainer.tls.certresolver=myresolver'
+      - 'traefik.http.routers.traefik.service=api@internal'
 
   portainer:
     image: portainer/portainer-ce:lts
     container_name: portainer
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.portainer.rule=Host(`portainer.alfred.polysharp.fr`)'
@@ -32,12 +41,6 @@ services:
       - 'traefik.http.routers.portainer.tls.certresolver=myresolver'
       - 'traefik.http.routers.portainer.service=portainer'
       - 'traefik.http.services.portainer.loadbalancer.server.port=9000'
-    restart: always
-    expose:
-      - 9000
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
 
 volumes:
   letsencrypt:

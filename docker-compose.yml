@@ -48,6 +48,7 @@ services:
 
 networks:
   traefik:
+    external: true
 
 volumes:
   letsencrypt:
